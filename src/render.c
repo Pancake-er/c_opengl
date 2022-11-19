@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 #include <matrix4f.h>
 #include <shader.h>
-#include <util.h>
+#include <mem_util.h>
 #include <texture.h>
 #include <string.h>
 GLuint render_create_and_use_vao() {
@@ -22,8 +22,8 @@ struct RenderHandles render_init(const char *shader_path,
     render_handles.max_index_count = max_index_count;
     render_handles.vertices_size = (max_quad_count * 4) * ((sizeof(float) * 5) 
         + sizeof(GLuint64));
-    render_handles.vertices = malloc_or_die(render_handles.vertices_size);
     render_handles.vertices_current_position = 0;
+    render_handles.vertices = malloc_or_die(render_handles.vertices_size);
 
     render_handles.vao = render_create_and_use_vao();
 
@@ -36,7 +36,7 @@ struct RenderHandles render_init(const char *shader_path,
         render_handles.fragment_shader);
     shader_use_program(render_handles.program);
 
-    struct Matrix4f projection = matrix4f_initialize();
+    struct Matrix4f projection = matrix4f_init();
     matrix4f_orthographic(&projection, 0.0f, (float)window_width, 
         (float)window_height, 0.0f, 0.0f, 10.0f);
     float matrix_array[16];
@@ -89,8 +89,8 @@ struct RenderHandles render_init(const char *shader_path,
     return render_handles;
 }
 void render_add_vertex(struct RenderHandles *render_handles, float x_position, 
-    float y_position, float z_position, float x_texture_coordinate, float y_texture_coordinate, 
-    GLuint64 texture_handle) {
+    float y_position, float z_position, float x_texture_coordinate, 
+    float y_texture_coordinate, GLuint64 texture_handle) {
     memcpy(render_handles->vertices + render_handles->vertices_current_position,
         &x_position, sizeof(float));
     render_handles->vertices_current_position += sizeof(float);
@@ -111,21 +111,28 @@ void render_add_vertex(struct RenderHandles *render_handles, float x_position,
     render_handles->vertices_current_position += sizeof(GLuint64);
 }
 void render_add_quad(struct RenderHandles *render_handles, float x_position, 
-    float y_position, float width, float height, float x_texture_coordinate, 
-    float y_texture_coordinate, float texture_width, float texture_height, 
-    struct Texture texture) {
-        
-    render_add_vertex(render_handles, x_position, y_position, 0.0f,
-        x_texture_coordinate, y_texture_coordinate, texture.bindless_handle);
-    render_add_vertex(render_handles, x_position + width, y_position, 0.0f, 
-        x_texture_coordinate + texture_width, y_texture_coordinate, 
+    float y_position, float radius_x, float radius_y, 
+    float x_texture_coordinate, float y_texture_coordinate, float texture_width, 
+    float texture_height, struct Texture texture) {
+    
+    /* Position is at center with radius being half the width and height.
+    Texture coordinates are from the top left corner, texture width and height 
+    specifying how far from the coordinates down and to the right of the texture
+    you want to show, with 0 0 being top left of the texture, and 1, 1 meaning 
+    bottom right. */
+
+    render_add_vertex(render_handles, x_position - radius_x, y_position 
+        - radius_y, 0.0f, x_texture_coordinate, y_texture_coordinate, 
         texture.bindless_handle);
-    render_add_vertex(render_handles, x_position + width, y_position + height, 
-        0.0f, x_texture_coordinate + texture_width, y_texture_coordinate 
+    render_add_vertex(render_handles, x_position + radius_x, y_position 
+        - radius_y, 0.0f, x_texture_coordinate + texture_width, 
+        y_texture_coordinate, texture.bindless_handle);
+    render_add_vertex(render_handles, x_position + radius_x, y_position 
+        + radius_y, 0.0f, x_texture_coordinate + texture_width, 
+        y_texture_coordinate + texture_height, texture.bindless_handle);
+    render_add_vertex(render_handles, x_position - radius_x, y_position 
+        + radius_y, 0.0f, x_texture_coordinate, y_texture_coordinate 
         + texture_height, texture.bindless_handle);
-    render_add_vertex(render_handles, x_position, y_position + height, 0.0f,
-        x_texture_coordinate, y_texture_coordinate + texture_height, 
-        texture.bindless_handle);
 
     if (render_handles->vertices_current_position
         == render_handles->vertices_size) {
@@ -150,6 +157,7 @@ void render_flush(struct RenderHandles *render_handles) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 }
-void render_clean_up(struct RenderHandles *render_handles) {
+void render_free(struct RenderHandles *render_handles) {
     free(render_handles->vertices);
+    render_handles->vertices = NULL;
 }

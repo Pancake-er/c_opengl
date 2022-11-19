@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <util.h>
+#include <mem_util.h>
 
 struct ShaderStrings shader_parse_file(const char *filename) {
     FILE *in_file = fopen(filename, "r");

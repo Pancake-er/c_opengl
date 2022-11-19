@@ -19,7 +19,7 @@ struct Matrix4f {
     float m32;
     float m33;
 };
-struct Matrix4f matrix4f_initialize();
+struct Matrix4f matrix4f_init();
 void matrix4f_orthographic(struct Matrix4f *matrix, float left, float right,
     float bottom, float top, float near, float far);
 void matrix4f_place_into_array_with_a_size_of_sixteen_floats(struct Matrix4f

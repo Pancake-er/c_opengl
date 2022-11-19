@@ -1,5 +1,5 @@
-#ifndef UTIL_INCLUDED
-#define UTIL_INCLUDED
+#ifndef MEM_UTIL_INCLUDED
+#define MEM_UTIL_INCLUDED
 
 #include <stdio.h>
 

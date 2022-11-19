@@ -1,7 +1,6 @@
 #shared
 #version 410
 #extension GL_ARB_explicit_uniform_location : require
-#extension GL_NV_gpu_shader5 : require  
 #extension GL_ARB_bindless_texture : require  
 
 #vertex shader
@@ -22,10 +21,10 @@ void main() {
 
 #fragment shader
 layout(location = 0) in vec2 v_textureCoords;
-layout(location = 1) flat in double v_textureIndex;
+layout(location = 1) flat in sampler2D v_textureIndex;
 
 layout(location = 0) out vec4 o_color;
 
 void main() {
-    o_color = texture(sampler2D((uint64_t)v_textureIndex), v_textureCoords);
+    o_color = texture(v_textureIndex, v_textureCoords);
 }

@@ -3,6 +3,7 @@
 #include <render.h>
 #include <texture.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 int main(void)
 {
@@ -38,16 +39,15 @@ int main(void)
         100, 480, 480);
 
     struct Texture texture = texture_create_texture("./res/dog.jpg");
-    struct Texture texture1 = texture_create_texture("./res/grass.png");
 
-    // Main loop.s
+    // Main loop.
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        for (int i = 0; i < 100; i++ ) {
-            render_add_quad(&render_handles, i, i, 128.0f, 128.0f, 0.0f, 
-                0.0f, 1.0f, 1.0f, texture);
+        for (int i = 0; i < 100; i++) {
+            render_add_quad(&render_handles, i * 3, i * 3, i, i, 0.0f, 0.0f, 
+                1.0f, 1.0f, texture);
         }
 
         render_flush(&render_handles);
@@ -57,7 +57,7 @@ int main(void)
         glfwPollEvents();
     }
 
-    render_clean_up(&render_handles);
+    render_free(&render_handles);
     glfwTerminate();
     return 0;
 }
