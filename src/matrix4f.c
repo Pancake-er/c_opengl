@@ -1,7 +1,7 @@
 #include <matrix4f.h>
 #include <string.h>
 
-struct Matrix4f matrix4f_initialize() {
+struct Matrix4f matrix4f_init() {
     struct Matrix4f matrix;
     matrix.m00 = 1.0f;
     matrix.m01 = 0.0f;
