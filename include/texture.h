@@ -9,6 +9,6 @@ struct Texture {
     GLuint id;
     GLuint64 bindless_handle;
 };
-struct Texture texture_create_texture(const char *path);
+struct Texture texture_create(const char *path);
 
 #endif

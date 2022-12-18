@@ -3,7 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
-struct Texture texture_create_texture(const char *path) {
+struct Texture texture_create(const char *path) {
     struct Texture texture;
 
     int channels;
@@ -12,7 +12,7 @@ struct Texture texture_create_texture(const char *path) {
         
     if (data == NULL) {
         printf("Error loading image. Are you sure the path given to " 
-            "\"texture_create_bindless_texture\" is correct?\n");
+            "\"texture_create_texture\" is correct?\n");
         exit(EXIT_FAILURE);
     }
     
@@ -29,13 +29,6 @@ struct Texture texture_create_texture(const char *path) {
 
     texture.bindless_handle = glGetTextureHandleARB(texture.id); 
     glMakeTextureHandleResidentARB(texture.bindless_handle);
-
-    GLenum err;
-    while((err = glGetError()) != GL_NO_ERROR)
-    {
-        printf("error: %x\n", err);
-    }
-
 
     glBindTexture(GL_TEXTURE_2D, 0);
     stbi_image_free(data);

@@ -6,12 +6,12 @@
 #vertex shader
 layout(location = 0) in vec3 a_vertices;
 layout(location = 1) in vec2 a_textureCoords;
-layout(location = 2) in double a_textureIndex;
+layout(location = 2) in int a_textureIndex;
 
 layout(location = 0) uniform mat4 u_viewProjection;
 
 layout(location = 0) out vec2 v_textureCoords;
-layout(location = 1) out double v_textureIndex;
+layout(location = 1) out int v_textureIndex;
 
 void main() {
     v_textureCoords = a_textureCoords;
@@ -21,10 +21,14 @@ void main() {
 
 #fragment shader
 layout(location = 0) in vec2 v_textureCoords;
-layout(location = 1) flat in sampler2D v_textureIndex;
+layout(location = 1) flat in int v_textureIndex;
+
+layout(bindless_sampler) uniform;
+layout(bindless_image) uniform;
+layout(location = 1) uniform sampler2D u_textures[100];
 
 layout(location = 0) out vec4 o_color;
 
 void main() {
-    o_color = texture(v_textureIndex, v_textureCoords);
+    o_color = texture(u_textures[v_textureIndex], v_textureCoords);
 }

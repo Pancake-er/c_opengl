@@ -36,18 +36,18 @@ int main(void)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     struct RenderHandles render_handles = render_init("./shaders/shader.glsl", 
-        100, 480, 480);
+        480, 480);
 
-    struct Texture texture = texture_create_texture("./res/dog.jpg");
+    struct Texture texture = texture_create("./res/dog.jpg");
 
     // Main loop.
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        for (int i = 0; i < 100; i++) {
-            render_add_quad(&render_handles, i * 3, i * 3, i, i, 0.0f, 0.0f, 
-                1.0f, 1.0f, texture);
+        for (int i = 0; i < 101; i++) {
+            render_add_quad(&render_handles, 100, 100, 50, 50, 0.0f, 0.0f, 1.0f,
+                1.0f, texture);
         }
 
         render_flush(&render_handles);

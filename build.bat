@@ -5,8 +5,6 @@ src/texture.c ^
 src/mem_util.c ^
 src/render.c ^
 src/matrix4f.c ^
-src/vector2f.c ^
-src/physics.c ^
 lib/src/libglfw3.a lib/src/glad.c ^
 -I include ^
 -I lib/include ^
