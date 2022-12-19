@@ -1,9 +1,9 @@
-#include <render.h>
+#include <render/render.h>
 #include <glad/glad.h>
-#include <matrix4f.h>
-#include <shader.h>
-#include <mem_util.h>
-#include <texture.h>
+#include <render/matrix4f.h>
+#include <render/shader.h>
+#include <render/mem_util.h>
+#include <render/texture.h>
 #include <string.h>
 GLuint render_create_and_use_vao() {
 
@@ -16,7 +16,8 @@ GLuint render_create_and_use_vao() {
 struct RenderHandles render_init(const char *shader_path, int window_width, 
     int window_height) {
 
-    // max_quad_count must be the same size as the textures[] is in the shader.
+    /* max_quad_count must be set to the same value as the array size of the 
+    u_textures[] uniform is in the fragment shader. */
     const size_t max_quad_count = 100;
     struct RenderHandles render_handles;
 
@@ -95,7 +96,7 @@ struct RenderHandles render_init(const char *shader_path, int window_width,
 void render_add_vertex(struct RenderHandles *render_handles, float x_position, 
     float y_position, float z_position, float x_texture_coordinate, 
     float y_texture_coordinate, int texture_index) {
-
+    // x_pos y_pos z_pos x_tex_pos y _tex_pos tex_index
     memcpy(render_handles->vertices + render_handles->vertices_current_position,
         &x_position, sizeof(float));
     render_handles->vertices_current_position += sizeof(float);
@@ -126,6 +127,8 @@ void render_add_quad(struct RenderHandles *render_handles, float x_position,
     you want to show, with 0 0 being top left of the texture, and 1, 1 meaning 
     bottom right. */
 
+    /* Gets set to a uniform in the fragment shader, and then indexed by a 
+    vertex attribute */
     render_handles->textures[render_handles->textures_current_position] 
         = texture.bindless_handle;
 

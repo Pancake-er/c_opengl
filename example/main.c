@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <render.h>
-#include <texture.h>
+#include <render/render.h>
+#include <render/texture.h>
 #include <stdio.h>
 #include <stdbool.h>
 

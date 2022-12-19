@@ -1,10 +1,10 @@
-#include <shader.h>
+#include <render/shader.h>
 #include <glad/glad.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <mem_util.h>
+#include <render/mem_util.h>
 
 struct ShaderStrings shader_parse_file(const char *filename) {
     FILE *in_file = fopen(filename, "r");
