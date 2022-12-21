@@ -39,9 +39,11 @@ int main(void)
     struct RenderHandles render_handles = render_init("./shaders/shader.glsl", 
         480, 480);
 
-    struct Texture texture = texture_create("./res/dog.jpg");
+    struct Texture texture = texture_create("./res/dog.jpg", true);
 
-    int x = 0;
+    // Anti-aliasing.
+    //glfwWindowHint(GLFW_SAMPLES, 4);
+    //glEnable(GL_MULTISAMPLE);  
 
     // Main loop.
     while (!glfwWindowShouldClose(window))
