@@ -41,13 +41,10 @@ struct RenderHandles render_init(const char *shader_path, int window_width,
         render_handles.fragment_shader);
     shader_use_program(render_handles.program);
 
-    struct Matrix4f projection = matrix4f_init();
-    matrix4f_orthographic(&projection, 0.0f, (float)window_width, 
-        (float)window_height, 0.0f, 0.0f, 10.0f);
-    float matrix_array[16];
-    matrix4f_place_into_array_with_a_size_of_sixteen_floats(projection, 
-        matrix_array);
-    glUniformMatrix4fv(0, 1, GL_FALSE, matrix_array);
+    matrix4f_init_array16f(render_handles.camera_matrix);
+    matrix4f_orthographic(render_handles.camera_matrix, 0.0f, 
+        (float)window_width, (float)window_height, 0.0f, 0.0f, 10.0f);
+    glUniformMatrix4fv(0, 1, GL_FALSE, render_handles.camera_matrix);
 
     glGenBuffers(1, &render_handles.vertex_buffer);
 
@@ -160,7 +157,9 @@ void render_flush(struct RenderHandles *render_handles) {
         glBindBuffer(GL_ARRAY_BUFFER, render_handles->vertex_buffer);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, render_handles->index_buffer);
 
-        glUniformHandleui64vARB(1, 100, (const GLuint64 *)render_handles->textures);
+        glUniformMatrix4fv(0, 1, GL_FALSE, render_handles->camera_matrix);
+        glUniformHandleui64vARB(1, 100, 
+            (const GLuint64 *)render_handles->textures);
 
         glBufferSubData(GL_ARRAY_BUFFER, 0, 
             render_handles->vertices_current_position, 

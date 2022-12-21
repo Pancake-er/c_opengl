@@ -18,6 +18,7 @@ struct RenderHandles {
     size_t max_index_count;
     GLuint64 *textures;
     size_t textures_current_position;
+    float camera_matrix[16];
 };
 GLuint render_create_and_use_vao();
 struct RenderHandles render_init(const char *shader_path, int window_width,

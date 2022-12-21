@@ -4,6 +4,7 @@
 #include <render/texture.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <render/matrix4f.h>
 
 int main(void)
 {
@@ -40,10 +41,14 @@ int main(void)
 
     struct Texture texture = texture_create("./res/dog.jpg");
 
+    int x = 0;
+
     // Main loop.
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
+
+        matrix4f_translate(render_handles.camera_matrix, 0.001f, 0.0f, 0.0f);
 
         for (int i = 0; i < 101; i++) {
             render_add_quad(&render_handles, 100, 100, 50, 50, 0.0f, 0.0f, 1.0f,
