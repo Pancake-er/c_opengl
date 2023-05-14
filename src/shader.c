@@ -131,7 +131,7 @@ GLuint shader_compile_shader(enum ShaderType TYPE, const char *source) {
         glGetShaderInfoLog(shader, max_length, &max_length, 
             &error_log[0]);
 
-        printf(error_log);
+        printf("%s", error_log);
 
         free(error_log);
         error_log = NULL;
@@ -158,7 +158,7 @@ GLuint shader_create_program(GLuint vertex_shader, GLuint fragment_shader) {
         glGetProgramInfoLog(program, max_length, &max_length, 
             &error_log[0]);
  
-        printf(error_log);
+        printf("%s", error_log);
 
         free(error_log);
         error_log = NULL;
