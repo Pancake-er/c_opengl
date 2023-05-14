@@ -6,4 +6,4 @@ To get started with the example, you will need to have Make and GCC (and on Linu
 
 If you're on Windows, first follow the instructions in the Makefile comments. 
 
-Run `make`. Then, run the compiled binary by `./example.out.`
+Run `make`. Then, run the compiled binary by `./example.out`.
